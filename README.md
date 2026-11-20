@@ -13,6 +13,8 @@ python python/app.py
 
 Open http://127.0.0.1:8000. On Linux or macOS, use `-o cpp/parcelmerge_engine` for the build. Use `--engine PATH` to select a different executable or `--port PORT` to change the server port.
 
+Keep the Python server running while using the website. It serves both the page and the delivery-plan API. Opening `web/index.html` directly or through VS Code Live Server serves the page without the API.
+
 The original console demonstration can still be built with `g++ -std=c++17 cpp/main.cpp cpp/graph.cpp cpp/parcel.cpp -o cpp/parcelmerge_demo.exe`.
 
 ## How the planner works
@@ -22,4 +24,4 @@ The original console demonstration can still be built with `g++ -std=c++17 cpp/m
 - Each trip serves one destination using a greedy next-fit rule. Its round-trip distance is twice the shortest outbound distance. The baseline sends each parcel on a separate round trip. Subtracting the consolidated totals gives the trips and distance saved.
 - The Python server validates inputs for `POST /api/plan`, invokes the C++ executable, and returns its JSON results to the browser.
 
-With the preloaded five parcels and a 5 kg vehicle, the expected result is 3 trips instead of 5 and 36 km instead of 62 km. A standalone route to Mall Road goes through Sanjauli and is 18 km round trip.
+Enter the one-way distances for the five roads before calculating. Distances are in kilometers and support up to three decimal places. Each road can be traveled in both directions at the same distance.

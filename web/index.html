@@ -8,42 +8,80 @@
   <script src="app.js" defer></script>
 </head>
 <body>
-  <main>
-    <header>
-      <p class="brand">ParcelMerge</p>
+  <header class="topbar">
+    <div class="shell brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      ParcelMerge
+    </div>
+  </header>
+  <main class="shell">
+    <header class="hero">
       <h1>Delivery planner</h1>
-      <p>Group parcels by destination and see how many warehouse round trips you can save.</p>
+      <p>Group parcels by destination to save warehouse round trips.</p>
     </header>
     <div class="layout">
-      <section class="panel" aria-labelledby="manifest-title">
-        <h2 id="manifest-title">Parcel manifest</h2>
-        <form id="planner">
-          <label class="capacity">Vehicle capacity (kg)
+      <form id="planner">
+        <section class="panel settings" aria-labelledby="settings-title">
+          <div class="panel-heading"><h2 id="settings-title">Route settings</h2></div>
+          <fieldset class="roads">
+            <legend>One-way road distances (km)</legend>
+            <div id="road-distances">
+              <label>Warehouse to Sanjauli
+                <input name="warehouse-sanjauli" type="number" min="0.001" max="1000000" step="0.001" required>
+              </label>
+              <label>Warehouse to Dhalli
+                <input name="warehouse-dhalli" type="number" min="0.001" max="1000000" step="0.001" required>
+              </label>
+              <label>Sanjauli to Dhalli
+                <input name="sanjauli-dhalli" type="number" min="0.001" max="1000000" step="0.001" required>
+              </label>
+              <label>Sanjauli to Mall Road
+                <input name="sanjauli-mall-road" type="number" min="0.001" max="1000000" step="0.001" required>
+              </label>
+              <label>Dhalli to Mall Road
+                <input name="dhalli-mall-road" type="number" min="0.001" max="1000000" step="0.001" required>
+              </label>
+            </div>
+          </fieldset>
+          <div class="capacity">
+            <label for="capacity">Vehicle capacity (kg)</label>
             <input id="capacity" type="number" min="0.001" max="1000000000" step="0.001" value="5" required>
-          </label>
+          </div>
+        </section>
+        <section class="panel manifest" aria-labelledby="manifest-title">
+          <div class="panel-heading">
+            <h2 id="manifest-title">Parcel manifest</h2>
+            <span id="parcel-count" class="count"></span>
+          </div>
+          <div class="column-labels" aria-hidden="true">
+            <span>Parcel ID</span><span>Destination</span><span>Weight (kg)</span><span>Priority</span>
+          </div>
           <div id="parcels"></div>
           <div class="actions">
-            <button type="button" id="add">Add parcel</button>
+            <button type="button" id="add"><span aria-hidden="true">+</span> Add parcel</button>
             <button type="submit" class="primary">Calculate plan</button>
           </div>
-        </form>
-      </section>
+        </section>
+      </form>
       <section class="panel results" aria-labelledby="plan-title">
-        <h2 id="plan-title">Delivery plan</h2>
-        <p id="status" role="status">Calculate a plan to see routes and savings.</p>
-        <div id="results"></div>
+        <div class="panel-heading"><h2 id="plan-title">Delivery plan</h2></div>
+        <div id="plan-content" data-state="idle">
+          <div class="empty-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+          <p id="status" role="status">Calculate a plan to see routes and savings.</p>
+          <div id="results"></div>
+        </div>
       </section>
     </div>
   </main>
   <template id="parcel-template">
     <fieldset class="parcel">
       <legend></legend>
-      <label>Parcel ID<input name="id" type="number" min="1" max="2147483647" required></label>
-      <label>Destination<select name="destination">
+      <label><span>Parcel ID</span><input name="id" type="number" min="1" max="2147483647" required></label>
+      <label><span>Destination</span><select name="destination">
         <option>Sanjauli</option><option>Dhalli</option><option>Mall Road</option>
       </select></label>
-      <label>Weight (kg)<input name="weight" type="number" min="0.001" max="1000000000" step="0.001" required></label>
-      <label>Priority<select name="priority">
+      <label><span>Weight (kg)</span><input name="weight" type="number" min="0.001" max="1000000000" step="0.001" required></label>
+      <label><span>Priority</span><select name="priority">
         <option value="1">Urgent</option><option value="2">Express</option><option value="3">Normal</option>
       </select></label>
       <button type="button" class="remove">Remove</button>

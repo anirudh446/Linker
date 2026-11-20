@@ -12,6 +12,13 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 DESTINATIONS = {"Sanjauli", "Dhalli", "Mall Road"}
+ROADS = {
+    "warehouse-sanjauli": ("Warehouse", "Sanjauli"),
+    "warehouse-dhalli": ("Warehouse", "Dhalli"),
+    "sanjauli-dhalli": ("Sanjauli", "Dhalli"),
+    "sanjauli-mall-road": ("Sanjauli", "Mall Road"),
+    "dhalli-mall-road": ("Dhalli", "Mall Road"),
+}
 
 
 def positive_number(value, label):
@@ -28,6 +35,16 @@ def engine_input(payload):
     if not isinstance(parcels, list) or len(parcels) > 1000:
         raise ValueError("Provide a parcel list containing at most 1000 parcels.")
     records = [f"{capacity} {len(parcels)}"]
+    distances = payload.get("distances")
+    if not isinstance(distances, dict) or distances.keys() != ROADS.keys():
+        raise ValueError("Provide a distance for each of the five roads.")
+    records.append(str(len(ROADS)))
+    for key, (source, destination) in ROADS.items():
+        label = f"{source} to {destination}"
+        km = positive_number(distances[key], label)
+        if km > 1_000_000 or km != round(km, 3):
+            raise ValueError(f"{label} must be at most 1 million km, with up to three decimal places.")
+        records.append(f'"{source}" "{destination}" {round(km * 1000)}')
     for index, parcel in enumerate(parcels, 1):
         if not isinstance(parcel, dict):
             raise ValueError(f"Parcel row {index} must be an object.")
