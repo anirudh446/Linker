@@ -1,6 +1,20 @@
-# ParcelMerge
+# Linker
 
-ParcelMerge is a DSA-based delivery planner for the sample Warehouse, Sanjauli, Dhalli, and Mall Road network. C++ computes routes and packs trips, Python serves the planner API, and the browser uses HTML, CSS, and JavaScript.
+Linker is a DSA-based delivery planner for the sample Warehouse, Sanjauli, Dhalli, and Mall Road network. C++ computes routes and packs trips, Python serves the planner API, and the browser uses HTML, CSS, and JavaScript.
+
+## Run locally
+
+From the repository root on Windows, with a C++17 compiler and Python 3 installed:
+
+```powershell
+g++ -std=c++17 -Wall -Wextra -Wpedantic cpp/engine.cpp cpp/planner.cpp cpp/graph.cpp cpp/parcel.cpp -o cpp/parcelmerge_engine.exe
+python python/app.py
+```
+
+Open http://127.0.0.1:8000. On Linux or macOS, use `-o cpp/parcelmerge_engine` for the build. Use `--engine PATH` to select a different executable or `--port PORT` to change the server port.
+
+Keep the Python server running while using the website. It serves both the page and the delivery-plan API. Opening `web/index.html` directly or through VS Code Live Server serves the page without the API.
+
 
 ## How the planner works
 
